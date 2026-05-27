@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dae 💚 Kai</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Comic Sans MS', cursive;
+}
+
+body{
+    height:100vh;
+    overflow:hidden;
+    background:linear-gradient(135deg,#b7f7c4,#e6ffed);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#1f4d2e;
+}
+
+.screen{
+    width:90%;
+    max-width:700px;
+    background:rgba(255,255,255,0.75);
+    backdrop-filter:blur(10px);
+    padding:40px;
+    border-radius:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+    text-align:center;
+    animation:fadeIn 0.8s ease;
+    position:relative;
+    z-index:2;
+}
+
+.hidden{
+    display:none;
+}
+
+h1{
+    font-size:3rem;
+    margin-bottom:20px;
+}
+
+h2{
+    margin-bottom:20px;
+}
+
+p{
+    font-size:1.2rem;
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+button{
+    padding:15px 30px;
+    border:none;
+    border-radius:50px;
+    background:#3cb371;
+    color:white;
+    font-size:1rem;
+    cursor:pointer;
+    transition:0.3s;
+    margin:10px;
+}
+
+button:hover{
+    transform:scale(1.08);
+    background:#2e8b57;
+}
+
+.choice-btn{
+    display:block;
+    width:80%;
+    margin:15px auto;
+}
+
+.progress{
+    width:100%;
+    height:15px;
+    background:#d8f5df;
+    border-radius:20px;
+    margin-bottom:25px;
+    overflow:hidden;
+}
+
+.bar{
+    height:100%;
+    width:0%;
+    background:#3cb371;
+    transition:0.5s;
+}
+
+#catchGame{
+    position:relative;
+    width:100%;
+    height:300px;
+    border-radius:20px;
+    background:#f3fff6;
+    overflow:hidden;
+    margin-top:20px;
+}
+
+.heart{
+    position:absolute;
+    font-size:35px;
+    cursor:pointer;
+    animation:pop 0.3s ease;
+}
+
+.floating{
+    position:absolute;
+    color:rgba(46,139,87,0.3);
+    animation:floatUp linear infinite;
+}
+
+#finalMessage{
+    font-size:1.5rem;
+    line-height:1.8;
+}
+
+@keyframes floatUp{
+    from{
+        transform:translateY(100vh);
+        opacity:1;
+    }
+    to{
+        transform:translateY(-10vh);
+        opacity:0;
+    }
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes pop{
+    from{
+        transform:scale(0);
+    }
+    to{
+        transform:scale(1);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div class="screen" id="screen1">
+    <h1>Dae 💚 Kai</h1>
+    <p>
+        Hey Kai 🌿<br><br>
+        I made you a tiny little game because
+        there’s something important I wanna ask you...
+    </p>
+
+    <button onclick="nextScreen(1,2,20)">
+        Start 💚
+    </button>
+</div>
+
+<!-- LEVEL 1 -->
+<div class="screen hidden" id="screen2">
+    <div class="progress"><div class="bar" id="bar"></div></div>
+
+    <h2>Level 1: Choose Dae 💚</h2>
+
+    <p>
+        Which person is clearly the coolest?
+    </p>
+
+    <button class="choice-btn" onclick="correctAnswer()">
+        Dae 🌿
+    </button>
+
+    <button class="choice-btn" onclick="wrongAnswer()">
+        Random Goblin 👹
+    </button>
+
+    <button class="choice-btn" onclick="wrongAnswer()">
+        Moldy Bread 🍞
+    </button>
+</div>
+
+<!-- LEVEL 2 -->
+<div class="screen hidden" id="screen3">
+    <div class="progress"><div class="bar" style="width:45%"></div></div>
+
+    <h2>Level 2: Kai Test ✨</h2>
+
+    <p>
+        What does Dae think about Kai?
+    </p>
+
+    <button class="choice-btn" onclick="wrongAnswer()">
+        He's kinda okay
+    </button>
+
+    <button class="choice-btn" onclick="correctAnswer2()">
+        He's adorable and amazing 💚
+    </button>
+
+    <button class="choice-btn" onclick="wrongAnswer()">
+        Smells like expired milk
+    </button>
+</div>
+
+<!-- MINI GAME -->
+<div class="screen hidden" id="screen4">
+    <div class="progress"><div class="bar" style="width:70%"></div></div>
+
+    <h2>Level 3: Catch the Hearts 💚</h2>
+
+    <p>
+        Catch 10 hearts to unlock the final question!
+    </p>
+
+    <h3>Score: <span id="score">0</span>/10</h3>
+
+    <div id="catchGame"></div>
+</div>
+
+<!-- FINAL -->
+<div class="screen hidden" id="screen5">
+    <div class="progress"><div class="bar" style="width:100%"></div></div>
+
+    <h1>Final Level 💚</h1>
+
+    <p id="finalMessage">
+        Kai 🌿<br><br>
+
+        You make me smile more than anyone else.<br>
+        Talking to you is the best part of my day,
+        and honestly... I really like you 💚<br><br>
+
+        So I have one final question...
+    </p>
+
+    <h2>Will you be my boyfriend?</h2>
+
+    <button id="yesBtn">
+        YES 💚
+    </button>
+
+    <button id="noBtn">
+        no 🙈
+    </button>
+
+    <div id="ending" class="hidden">
+        <h1 style="margin-top:30px;">
+            AHHH 💚✨
+        </h1>
+
+        <p>
+            Dae + Kai = cutest duo ever 🌿<br><br>
+            You just unlocked:<br>
+            <strong>BOYFRIEND STATUS</strong>
+        </p>
+    </div>
+</div>
+
+<script>
+let score = 0;
+
+function nextScreen(current,next,progress){
+    document.getElementById("screen"+current).classList.add("hidden");
+    document.getElementById("screen"+next).classList.remove("hidden");
+
+    const bar = document.getElementById("bar");
+    if(bar){
+        bar.style.width = progress + "%";
+    }
+}
+
+function wrongAnswer(){
+    alert("WRONG 😭 try again");
+}
+
+function correctAnswer(){
+    nextScreen(2,3,45);
+}
+
+function correctAnswer2(){
+    nextScreen(3,4,70);
+    startGame();
+}
+
+const gameArea = document.getElementById("catchGame");
+
+function createHeart(){
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💚";
+
+    heart.style.left = Math.random() * 90 + "%";
+    heart.style.top = Math.random() * 80 + "%";
+
+    heart.addEventListener("click", () => {
+        heart.remove();
+        score++;
+        document.getElementById("score").innerText = score;
+
+        if(score >= 10){
+            nextScreen(4,5,100);
+        }
+    });
+
+    gameArea.appendChild(heart);
+
+    setTimeout(() => {
+        if(heart.parentNode){
+            heart.remove();
+        }
+    },1500);
+}
+
+function startGame(){
+    const interval = setInterval(() => {
+        if(score >= 10){
+            clearInterval(interval);
+            return;
+        }
+        createHeart();
+    },700);
+}
+
+const noBtn = document.getElementById("noBtn");
+
+noBtn.addEventListener("mouseover", () => {
+    noBtn.style.position = "absolute";
+
+    noBtn.style.left =
+        Math.random() * 70 + "%";
+
+    noBtn.style.top =
+        Math.random() * 80 + "%";
+});
+
+document.getElementById("yesBtn").addEventListener("click", () => {
+    document.getElementById("ending").classList.remove("hidden");
+
+    yesBtn.style.display = "none";
+    noBtn.style.display = "none";
+});
+
+function floatingStuff(){
+    const item = document.createElement("div");
+    item.classList.add("floating");
+
+    const things = ["💚","✨","🌿"];
+
+    item.innerHTML =
+        things[Math.floor(Math.random()*things.length)];
+
+    item.style.left = Math.random()*100 + "vw";
+    item.style.fontSize =
+        (Math.random()*20+15)+"px";
+
+    item.style.animationDuration =
+        (Math.random()*4+4)+"s";
+
+    document.body.appendChild(item);
+
+    setTimeout(()=>{
+        item.remove();
+    },7000);
+}
+
+setInterval(floatingStuff,300);
+</script>
+
+</body>
+</html>
